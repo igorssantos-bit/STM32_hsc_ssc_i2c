@@ -15,6 +15,7 @@
 #include "hsc_ssc_i2c.h"
 
 /* Variables declarations -----------------------------------------------------------------------*/
+extern I2C_HandleTypeDef hi2c2;
 
 /* Functions definitions ------------------------------------------------------------------------*/
 
@@ -29,7 +30,7 @@ void hsc_ssc_i2c_get_data(I2C_HandleTypeDef *hi2c, float *pressure, float *tempe
 	if(i2c_comm == HAL_OK){
 		HAL_Delay(30);
 		/* Read result */
-		i2c_comm = HAL_I2C_Master_Receive(hi2c, SI7021_ADDRESS_READ, hsc_ssc_buffer, HSC_SSC_TEMP_8BIT_RES, DEFAULT_I2C_TIMEOUT);
+		i2c_comm = HAL_I2C_Master_Receive(hi2c, HSC_SSC_PRESS_ADDR, hsc_ssc_buffer, HSC_SSC_TEMP_8BIT_RES, DEFAULT_I2C_TIMEOUT);
 		if(i2c_comm == HAL_OK){
 
 			// first 2 bits from first byte (S1, S0):
@@ -43,7 +44,7 @@ void hsc_ssc_i2c_get_data(I2C_HandleTypeDef *hi2c, float *pressure, float *tempe
 			if(status == 0){
 				// resultant bits for bridge data
 				bridge_data = ((hsc_ssc_buffer[0] & 0x3f) << 8) + hsc_ssc_buffer[1];
-				*pressure = (1.0 * (bridge_data - OUTPUT_MIN) * (PRESSURE_MAX_PSI - OUTPUT_MAX) / (OUTPUT_MAX - OUTPUT_MIN) + PRESSURE_MIN);
+				*pressure = (1.0 * ((((bridge_data - OUTPUT_MIN) * (PRESSURE_MAX_PSI - PRESSURE_MIN)) / (OUTPUT_MAX - OUTPUT_MIN)) + PRESSURE_MIN));
 				temp_data = ((hsc_ssc_buffer[2] << 8) + (hsc_ssc_buffer[3] & 0xe0)) >> 5;
 				*temperature = (temp_data * 0.0977) - 50;
 			}
@@ -61,7 +62,7 @@ float hsc_ssc_i2c_read_pressure(I2C_HandleTypeDef *hi2c){
 	if(i2c_comm == HAL_OK){
 		HAL_Delay(30);
 		/* Read result */
-		i2c_comm = HAL_I2C_Master_Receive(hi2c, SI7021_ADDRESS_READ, hsc_ssc_buffer, 2, DEFAULT_I2C_TIMEOUT);
+		i2c_comm = HAL_I2C_Master_Receive(hi2c, HSC_SSC_PRESS_ADDR, hsc_ssc_buffer, 2, DEFAULT_I2C_TIMEOUT);
 		if(i2c_comm == HAL_OK){
 
 			// first 2 bits from first byte (S1, S0):
@@ -75,7 +76,7 @@ float hsc_ssc_i2c_read_pressure(I2C_HandleTypeDef *hi2c){
 			if(status == 0){
 				// resultant bits for bridge data
 				bridge_data = ((hsc_ssc_buffer[0] & 0x3f) << 8) + hsc_ssc_buffer[1];
-				return (1.0 * (bridge_data - OUTPUT_MIN) * (PRESSURE_MAX_PSI - OUTPUT_MAX) / (OUTPUT_MAX - OUTPUT_MIN) + PRESSURE_MIN);
+				return (1.0 * ((((bridge_data - OUTPUT_MIN) * (PRESSURE_MAX_PSI - PRESSURE_MIN)) / (OUTPUT_MAX - OUTPUT_MIN)) + PRESSURE_MIN));
 			}
 			else return HSC_SSC_MEASURE_FAILED;
 		}

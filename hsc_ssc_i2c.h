@@ -51,12 +51,20 @@
  * 3 = 3.3 Vdd voltage supply
  * */
 #define OUTPUT_MIN 					0x666       // 10%
-#define OUTPUT_MAX 					0x399A      // 90% of 2^14 - 1
+#define OUTPUT_MAX 					0x3999      // 90% of 2^14 - 1
 #define PRESSURE_MIN 				0
 #define PRESSURE_MAX_PSI 			150.0
 #define PRESSURE_MAX_PASCAL 		1034213.6 	// 150 psi in pascal
 
 /* Functions declarations -----------------------------------------------------------------------*/
+
+/**
+ * @brief		Reads pressure measurement and temperature from the sensor via i2c
+ * @param		hi2c: I2C bus handler.
+ * @retval		Current pressure measured in psi and temperature em C.
+ * 				HSC_SSC_MEASURE_FAILED
+ */
+void hsc_ssc_i2c_get_data(I2C_HandleTypeDef *hi2c, float *pressure, float *temperature);
 
 /**
  * @brief		Reads pressure measurement from the sensor via i2c
