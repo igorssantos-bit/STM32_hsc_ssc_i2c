@@ -3,7 +3,7 @@
   * @file           : hsc_ssc_i2c.h
   * @brief          : This file contains the headers of honeywell pressure
   *         sensor SSCDANN150PG2A3
-  * @autor           : igorssantos-bit
+  * @autor          : igorssantos-bit
   ******************************************************************************
   * @attention
   *
@@ -19,14 +19,14 @@
 /* Defines --------------------------------------------------------------------------------------*/
 
 /* Default communication value timeout */
-#define DEFAULT_I2C_TIMEOUT			100
+#define DEFAULT_I2C_TIMEOUT			  100
 
 /* Measurement error value */
 #define HSC_SSC_MEASURE_FAILED		0xFFFF
 
 /* Temperature resolution */
-#define HSC_SSC_TEMP_8BIT_RES		3			// 2 for bridge + 1 for temp
-#define HSC_SSC_TEMP_11BIT_RES		4			// 2 for bridge + 2 for temp
+#define HSC_SSC_TEMP_8BIT_RES     3			// 2 for bridge + 1 for temp
+#define HSC_SSC_TEMP_11BIT_RES    4			// 2 for bridge + 2 for temp
 
 /* I2C communication address
  * Slave Pressure sensors address can be found based on the part number: _SC_________XA_.
@@ -38,7 +38,7 @@
  * 6  - i2c slave address 0x68
  * 7  - i2c slave address 0x78
  * */
-#define HSC_SSC_PRESS_ADDR			((0x28 << 1) | 0x01) // Only read option available
+#define HSC_SSC_PRESS_ADDR			   ((0x28 << 1) | 0x01) // Only read option available
 
 /* Datasheet specifications for SSC-D-AN-N-150PG-2-A-3 sensor:
  * SSC = Standard Accuracy, Compensated/Amplified
@@ -50,11 +50,11 @@
  * A = 10% to 90% of Vsupply (analog), 214 counts (digital)
  * 3 = 3.3 Vdd voltage supply
  * */
-#define OUTPUT_MIN 					0x666       // 10%
-#define OUTPUT_MAX 					0x3999      // 90% of 2^14 - 1
-#define PRESSURE_MIN 				0
-#define PRESSURE_MAX_PSI 			150.0
-#define PRESSURE_MAX_PASCAL 		1034213.6 	// 150 psi in pascal
+#define OUTPUT_MIN 					        0x666       // 10%
+#define OUTPUT_MAX 					        0x3999      // 90% of 2^14 - 1
+#define PRESSURE_MIN 				        0
+#define PRESSURE_MAX_PSI 			      150.0
+#define PRESSURE_MAX_PASCAL 		    1034213.6 	// 150 psi in pascal
 
 /* Functions declarations -----------------------------------------------------------------------*/
 
